@@ -62,7 +62,7 @@ def question_wildcard_match(text, query):
                 else:
                     break
 
-            if nextQueryIdx == len(simplifyQuery) or nextTextIdx == len(text):
+            if nextQueryIdx == len(simplifyQuery) or all([simplifyQuery[idx].type == '?' for idx in range(nextQueryIdx, len(simplifyQuery))]):
                 return True
     print(seen)
     return False 
@@ -73,6 +73,8 @@ if __name__ == '__main__':
     [("defgac", "ab?c"), True],
     [("acasdfadsfwersfgwseg", "ab?c"), True],
     [("asdasdfoefhweqifhabc", "ab?c"), True],
-    [("a", "ab?c?"), True],
-    [("abc", "ab?c?"), True],
+    [("a", "ab?c?d?"), True],
+    [("ad", "ab?c?d?"), True],
+    [("a", "adasdasb?c?"), False],
   ])
+ 
