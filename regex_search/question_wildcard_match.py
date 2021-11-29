@@ -44,7 +44,7 @@ def question_wildcard_match(text, query):
         if simplifyQuery[0].type == '?':
             addToPossibleSolutions(i + 1, 0)
             addToPossibleSolutions(i + 1, 1)
-        elif simplifyQuery[0].character == text[i]:
+        elif simplifyQuery[0].character == text[i] or simplifyQuery[0].character == '.':
             addToPossibleSolutions(i + 1, 1)
 
         while possibleSolutions:
@@ -56,7 +56,7 @@ def question_wildcard_match(text, query):
                 if simplifyQuery[nextQueryIdx].type == '?':
                     addToPossibleSolutions(nextTextIdx, nextQueryIdx + 1)
                 
-                if simplifyQuery[nextQueryIdx].character == text[nextTextIdx]:
+                if simplifyQuery[nextQueryIdx].character == text[nextTextIdx] or simplifyQuery[nextQueryIdx].character == '.':
                     nextTextIdx += 1
                     nextQueryIdx += 1
                 else:
@@ -64,7 +64,7 @@ def question_wildcard_match(text, query):
 
             if nextQueryIdx == len(simplifyQuery) or all([simplifyQuery[idx].type == '?' for idx in range(nextQueryIdx, len(simplifyQuery))]):
                 return True
-    print(seen)
+
     return False 
 
 if __name__ == '__main__':
@@ -76,5 +76,10 @@ if __name__ == '__main__':
     [("a", "ab?c?d?"), True],
     [("ad", "ab?c?d?"), True],
     [("a", "adasdasb?c?"), False],
+    [("aDcdefg", "ab?c."), False],
+    [("aDcdefg", "aD?d"), False],
+    [("aDcdefg","aD.?"), True],
+    [("aDcdefg","a?c."), True],
+    [("aaaaaa","aaa.?"), True],
   ])
  
